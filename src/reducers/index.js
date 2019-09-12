@@ -26,14 +26,31 @@ export default function(state = initialState, action) {
             let features = state.car.features;
             features.push(action.payload);
 
+            let additionalPrice = state.additionalPrice + action.payload.price;
+
             return {
                 ...state,
                 car: { ...state.car, features },
+                additionalPrice,
             };
 
         case REMOVE_ITEM:
+            console.log('removing item');
+
+            console.log(state.car.features);
+
+            let removedFeatures = state.car.features;
+            removedFeatures.splice(
+                removedFeatures.findIndex(item => item.id == action.payload.id),
+                1
+            );
+
+            let newPrice = state.additionalPrice - action.payload.price;
+
             return {
                 ...state,
+                car: { ...state.car, removedFeatures },
+                additionalPrice: newPrice,
             };
 
         default:
